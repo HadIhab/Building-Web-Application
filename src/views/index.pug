@@ -2,6 +2,9 @@ html
 	head
 		title MyApp
 	body
-		h1 Library
+		h1(id='MyId')= title
 		p
 			h3 Sub header
+		ul
+			each val in list
+				li= val
