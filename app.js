@@ -13,7 +13,7 @@ app.set('views','./src/views');
 app.set('view engine', 'pug');
 
 app.get('/',function(req, res){
-  res.sendFile(path.join(__dirname,'views/index.html'));
+  res.render('index');
 });
 
 app.listen(3000,function(){
