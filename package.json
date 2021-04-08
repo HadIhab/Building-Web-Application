@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=app node app.js"
+    "start": "DEBUG=app node app.js",
+    "lint": "eslint"
   },
   "author": "Hadjerci Ihab",
   "license": "ISC",
@@ -14,6 +15,10 @@
     "debug": "^2.6.9",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.23.0"
   }
 }
