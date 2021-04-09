@@ -20,7 +20,16 @@ app.get('/',function(req, res){
   	'index', 
   	{ 
   		title: 'My Library',
-  		nav: ['Books','Authors']
+  		nav: [
+  			  {
+  				link:'/books',
+  				title:'Books'
+  			  },
+  			  {
+  				link:'/authors',
+  				title:'Authors'
+  			  }
+  			]
   	}
   	);
 });
