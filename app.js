@@ -18,13 +18,28 @@ app.set('view engine', 'ejs');
 
 bookRouter.route('/')
 	.get((req,res)=>{
-		res.send('Hello books');
+		res.render(
+			'books', 
+		  	{ 
+		  		title: 'My Library',
+		  		nav: [
+		  			  {
+		  				link:'/books',
+		  				title:'Books'
+		  			  },
+		  			  {
+		  				link:'/authors',
+		  				title:'Authors'
+		  			  }
+		  			]
+		  	}
+		);
 	});
 bookRouter.route('/single')
 	.get((req,res)=>{
 		res.send('Hello sing book');
 	});	
-	
+
 app.use('/books',bookRouter);	
 app.get('/',function(req, res){
   res.render(
