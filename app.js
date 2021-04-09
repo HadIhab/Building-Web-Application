@@ -16,11 +16,16 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist'))
 app.set('views','./src/views');
 app.set('view engine', 'ejs');
 
-bookRouter.route('/books')
+bookRouter.route('/')
 	.get((req,res)=>{
 		res.send('Hello books');
 	});
-app.use('/',bookRouter);	
+bookRouter.route('/single')
+	.get((req,res)=>{
+		res.send('Hello sing book');
+	});	
+	
+app.use('/books',bookRouter);	
 app.get('/',function(req, res){
   res.render(
   	'index', 
