@@ -1,59 +1,26 @@
 const express = require('express');
 const bookRouter = express.Router();
 const sql = require('mssql');
-const debug = require('debug')('app');
+const debug = require('debug')('app:bookRoutes');
+const { MongoClient, ObjectID } = require('mongodb');
 
 function router(nav){
-	/*const books = [
-    {
-      title: 'War and Peace',
-      genre: 'Historical Fiction',
-      author: 'Lev Nikolayevich Tolstoy',
-      read: false
-    },
-    {
-      title: 'Les Misérables',
-      genre: 'Historical Fiction',
-      author: 'Victor Hugo',
-      read: false
-    },
-    {
-      title: 'The Time Machine',
-      genre: 'Science Fiction',
-      author: 'H. G. Wells',
-      read: false
-    },
-    {
-      title: 'A Journey into the Center of the Earth',
-      genre: 'Science Fiction',
-      author: 'Jules Verne',
-      read: false
-    },
-    {
-      title: 'The Dark World',
-      genre: 'Fantasy',
-      author: 'Henry Kuttner',
-      read: false
-    },
-    {
-      title: 'The Wind in the Willows',
-      genre: 'Fantasy',
-      author: 'Kenneth Grahame',
-      read: false
-    },
-    {
-      title: 'Life On The Mississippi',
-      genre: 'History',
-      author: 'Mark Twain',
-      read: false
-    },
-    {
-      title: 'Childhood',
-      genre: 'Biography',
-      author: 'Lev Nikolayevich Tolstoy',
-      read: false
-    }];*/
+	/**************/
+	/****
+			In this file i've implemented two ways to store data:
+				1- In MS Azure SQL server
+				2- In NoSql MongoDB 
 
+				USE THE ONE U WANT and set a comment to the way u discard
+
+	****/
+
+
+	/********************************************/
+	/****  FIRST WAY : MS AZURE SQL SERVER   ****/
+	/********************************************/
+
+	/*
 	bookRouter.route('/')
 		.get((req,res)=>{
 
@@ -72,7 +39,7 @@ function router(nav){
 					);	
 		    }());	
 		});
-
+	
 	bookRouter.route('/:id')
 		.all((req,res,next)=>{
 		  
@@ -82,7 +49,7 @@ function router(nav){
 			const { recordset } = 
 				await request.input('id',sql.Int,id)
 					  .query('select * from books where id= @id');
-			/*I put {recordset} in place of the 'result' variable for optimisation*/
+			//I put {recordset} in place of the 'result' variable for optimisation
 			//debug({recordset});
 			req.book = recordset[0];
 			// The line above is equivalent to this : [req.book] = recordset;
@@ -99,6 +66,44 @@ function router(nav){
 				}
 			);	
 		});
+		*/
+
+
+	/********************************************/
+	/****  SECOND WAY : NOSQL MONGO DB       ****/
+	/********************************************/
+
+	bookRouter.route('/')
+    .get((req, res) => {
+	      const url = 'mongodb://localhost:27017';
+	      const dbName = 'libraryApp';
+
+	      (async function mongo() {
+	        let client;
+	        try {
+	          client = await MongoClient.connect(url);
+	          debug('Connected correctly to server');
+
+	          const db = client.db(dbName);
+	          const col = await db.collection('books');
+	          const books = await col.find().toArray();
+	          res.render(
+	            'bookListView',
+	            {
+	              nav,
+	              title: 'Library',
+	              books
+	            }
+	          );
+	        } 
+	        catch (err) {
+	          debug(err.stack);
+	        }
+	        client.close();
+	      }());
+    });
+
+
 
 	return bookRouter;	
 }
