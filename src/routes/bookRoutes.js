@@ -4,7 +4,7 @@ const sql = require('mssql');
 const debug = require('debug')('app');
 
 function router(nav){
-	const books = [
+	/*const books = [
     {
       title: 'War and Peace',
       genre: 'Historical Fiction',
@@ -52,7 +52,7 @@ function router(nav){
       genre: 'Biography',
       author: 'Lev Nikolayevich Tolstoy',
       read: false
-    }];
+    }];*/
 
 	bookRouter.route('/')
 		.get((req,res)=>{
@@ -76,16 +76,23 @@ function router(nav){
 	bookRouter.route('/:id')
 		.get((req,res)=>{
 
-		  const { id } = req.params;
-	      res.render(
-		        'bookView',
-		        {
-		          nav,
-		          title: 'Library',
-		          book: books[id]
-		        }
-	        );
+		  
+		  (async function query() {
+		  	const { id } = req.params;
+			const result =request = new sql.Request();
+			const result = await request.query('select * from books where id= ');
+			debug(result);
+			res.render(
+						'bookView', 
+					  	{ 
+					  		title: 'My Library',
+					  		nav,
+					  		books: result.recordset	
+					  	}
+					);	
+		    }());
 		});
+
 	return bookRouter;	
 }
 	
