@@ -54,6 +54,6 @@ app.get('/',function(req, res){
   	);
 });
 
-app.listen(3000,function(){
+app.listen(port,function(){
   debug(`Listening on port ${chalk.red(port)}`);
 });

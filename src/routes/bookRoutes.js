@@ -1,5 +1,7 @@
 const express = require('express');
 const bookRouter = express.Router();
+const sql = require('mssql');
+const debug = require('debug')('app');
 
 function router(nav){
 	const books = [
@@ -53,14 +55,19 @@ function router(nav){
     }];
 	bookRouter.route('/')
 		.get((req,res)=>{
-			res.render(
-				'bookListView', 
-			  	{ 
-			  		title: 'My Library',
-			  		nav,
-			  		books	
-			  	}
-			);
+			const request = new sql.Request();
+			request.query('select * from books')
+			  .then((result) => {
+			  		debug(result);
+					res.render(
+						'bookListView', 
+					  	{ 
+					  		title: 'My Library',
+					  		nav,
+					  		books: result.recordset	
+					  	}
+					);			  	
+			  });	
 		});
 	bookRouter.route('/:id')
 		.get((req,res)=>{
