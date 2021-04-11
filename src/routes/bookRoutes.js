@@ -53,24 +53,29 @@ function router(nav){
       author: 'Lev Nikolayevich Tolstoy',
       read: false
     }];
+
 	bookRouter.route('/')
 		.get((req,res)=>{
-			const request = new sql.Request();
-			request.query('select * from books')
-			  .then((result) => {
-			  		debug(result);
-					res.render(
+
+		  (async function query() {
+
+			const result =request = new sql.Request();
+			const result = await request.query('select * from books');
+			debug(result);
+			res.render(
 						'bookListView', 
 					  	{ 
 					  		title: 'My Library',
 					  		nav,
 					  		books: result.recordset	
 					  	}
-					);			  	
-			  });	
+					);	
+		    }());	
 		});
+
 	bookRouter.route('/:id')
 		.get((req,res)=>{
+
 		  const { id } = req.params;
 	      res.render(
 		        'bookView',
