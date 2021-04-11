@@ -74,8 +74,7 @@ function router(nav){
 		});
 
 	bookRouter.route('/:id')
-		.get((req,res)=>{
-
+		.all((req,res,next)=>{
 		  
 		  (async function query() {
 		  	const { id } = req.params;
@@ -84,16 +83,21 @@ function router(nav){
 				await request.input('id',sql.Int,id)
 					  .query('select * from books where id= @id');
 			/*I put {recordset} in place of the 'result' variable for optimisation*/
-			debug({recordset});
-			res.render(
-						'bookView', 
-					  	{ 
-					  		title: 'My Library',
-					  		nav,
-					  		book: recordset[0]	
-					  	}
-					);	
+			//debug({recordset});
+			req.book = recordset[0];
+			// The line above is equivalent to this : [req.book] = recordset;
+			next();
 		    }());
+		})
+		.get((req,res)=>{
+			res.render(
+				'bookView', 
+				{ 
+					title: 'My Library',
+					nav,
+					book: req.book	
+				}
+			);	
 		});
 
 	return bookRouter;	
