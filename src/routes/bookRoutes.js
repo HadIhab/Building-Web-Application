@@ -60,14 +60,14 @@ function router(nav){
 		  (async function query() {
 
 			const request = new sql.Request();
-			const result = await request.query('select * from books');
-			debug(result);
+			const { recordset } = await request.query('select * from books');
+			//debug(result);
 			res.render(
 						'bookListView', 
 					  	{ 
 					  		title: 'My Library',
 					  		nav,
-					  		books: result.recordset	
+					  		books: recordset	
 					  	}
 					);	
 		    }());	
@@ -80,16 +80,17 @@ function router(nav){
 		  (async function query() {
 		  	const { id } = req.params;
 			const request = new sql.Request();
-			const result = 
+			const { recordset } = 
 				await request.input('id',sql.Int,id)
 					  .query('select * from books where id= @id');
-			debug(result);
+			/*I put {recordset} in place of the 'result' variable for optimisation*/
+			debug({recordset});
 			res.render(
 						'bookView', 
 					  	{ 
 					  		title: 'My Library',
 					  		nav,
-					  		book: result.recordset[0]	
+					  		book: recordset[0]	
 					  	}
 					);	
 		    }());
