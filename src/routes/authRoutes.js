@@ -4,7 +4,7 @@ const debug = require('debug')('app:authRoutes');
 
 const authRouter = express.Router();
 
-function router(){
+function router(nav){
 	authRouter.route('/signUp')
 	  .post((req,res)=>{
 
@@ -36,6 +36,18 @@ function router(){
 	  	
 
 	  });
+
+	authRouter.route('/signin')
+	    .get( (req, res) => {
+	      res.render('signin', {
+	        nav,
+	        title: 'Sign In'
+	      });
+	    })
+	    .post( passport.authenticate('local', {
+	      successRedirect: '/auth/profile',
+	      failureRedirect: '/'
+    }));
 
 	authRouter.route('/profile')
 	  .get((req,res)=>{
