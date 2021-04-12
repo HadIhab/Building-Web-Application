@@ -72,6 +72,14 @@ function router(nav){
 	/********************************************/
 	/****  SECOND WAY : NOSQL MONGO DB       ****/
 	/********************************************/
+	bookRouter.use((req,res,next)=>{
+		if(req.user){
+			next();
+		}
+		else{
+			res.redirect('/');
+		}
+	});
 
 	bookRouter.route('/')
     .get((req, res) => {
