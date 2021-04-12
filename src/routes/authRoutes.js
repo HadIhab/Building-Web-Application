@@ -46,8 +46,8 @@ function router(nav){
 	    })
 	    .post( passport.authenticate('local', {
 	      successRedirect: '/auth/profile',
-	      failureRedirect: '/'
-    }));
+	      failureRedirect: '/'})
+	    );
 
 	authRouter.route('/profile')
 	  .get((req,res)=>{
