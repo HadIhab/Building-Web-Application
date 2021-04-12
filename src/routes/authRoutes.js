@@ -22,16 +22,18 @@ function router(){
 	  			const col = db.collection('user');
 	  			const user = { username, password };
 	  			const results = await col.insertOne(user);
+	  			debug(results);
+	  			//create user : req.login came from passport initialise
+			  	req.login(results.ops[0],() =>{
+			  		res.redirect('/auth/profile');
+			  	});
 	  		}
 	  		catch(err){
 
 	  		}
 	  	}())
 
-	  	//create user : req.login came from passport initialise
-	  	req.login(req.body,() =>{
-	  		res.redirect('/auth/profile');
-	  	});
+	  	
 
 	  });
 
