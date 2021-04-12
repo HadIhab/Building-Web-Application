@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const path = require('path');
 const sql = require('mssql');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
 
@@ -28,7 +29,7 @@ app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(session({ secret: 'library' }));
+app.use(session({ secret: 'library', resave: false,saveUninitialized: true, }));
 
 require('./src/config/passport.js')(app);
 
@@ -46,7 +47,7 @@ const nav = [
   ];
 const bookRouter = require('./src/routes/bookRoutes')(nav);
 const adminRouter = require('./src/routes/adminRoutes')(nav);
-const authRouter = require('./src/routes/authRoutes');
+const authRouter = require('./src/routes/authRoutes')(nav);
 
 app.use('/admin',adminRouter);	
 app.use('/books',bookRouter);
