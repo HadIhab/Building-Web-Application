@@ -74,7 +74,7 @@ function router(nav){
 	/****  SECOND WAY : NOSQL MONGO DB       ****/
 	/********************************************/
 	
-	const { getIndex } = bookController(nav);
+	const { getIndex, getById } = bookController(nav);
 	bookRouter.use((req,res,next)=>{
 		if(req.user){
 			next();
@@ -85,39 +85,10 @@ function router(nav){
 	});
 
 	bookRouter.route('/')
-    .get();
+    .get(getIndex);
 
     bookRouter.route('/:id')
-    .get((req, res) => {
-	      const { id } = req.params;
-	      const url = 'mongodb://localhost:27017';
-	      const dbName = 'libraryApp';
-
-	      (async function mongo() {
-	        let client;
-	        try {
-	          client = await MongoClient.connect(url);
-	          debug('Connected correctly to server');
-
-	          const db = client.db(dbName);
-
-	          const col = await db.collection('books');
-
-	          const book = await col.findOne({ _id: new ObjectID(id) });
-	          debug(book);
-	          res.render(
-	            'bookView',
-	            {
-	              nav,
-	              title: 'Library',
-	              book
-	            }
-	          );
-	        } catch (err) {
-	          debug(err.stack);
-	        }
-	      }());
-    });
+    .get(getById);
 
 	return bookRouter;	
 }
