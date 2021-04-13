@@ -32,6 +32,11 @@ function bookController(nav) {
     }
 
 	function getById(){}
+
+	return {
+		getIndex,
+		getById
+	};
 }
 
 module.exports = bookController;
