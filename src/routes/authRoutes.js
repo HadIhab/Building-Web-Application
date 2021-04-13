@@ -58,7 +58,7 @@ function router(nav){
 	  	else{
 	  		res.redirect('/');
 	  	}
-	  });	
+	  })	
 	  .get((req,res)=>{
 	  	res.json(req.user); /*because i'm already logged in, passport attaches the user to the request*/
 	  });  

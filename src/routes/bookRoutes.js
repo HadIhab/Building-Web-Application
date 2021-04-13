@@ -74,15 +74,8 @@ function router(nav){
 	/****  SECOND WAY : NOSQL MONGO DB       ****/
 	/********************************************/
 	
-	const { getIndex, getById } = bookController(nav);
-	bookRouter.use((req,res,next)=>{
-		if(req.user){
-			next();
-		}
-		else{
-			res.redirect('/');
-		}
-	});
+	const { getIndex, getById, middleware } = bookController(nav);
+	bookRouter.use(middleware);
 
 	bookRouter.route('/')
     .get(getIndex);
