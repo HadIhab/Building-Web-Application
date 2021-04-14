@@ -3,6 +3,7 @@ const { MongoClient, ObjectID } = require('mongodb');
 const debug = require('debug')('app:bookRoutes');
 const bookRouter = express.Router();
 const bookController = require('../controllers/bookController');
+const bookService = require('../services/goodreadsService');
 const sql = require('mssql');
 
 function router(nav){
@@ -74,7 +75,7 @@ function router(nav){
 	/****  SECOND WAY : NOSQL MONGO DB       ****/
 	/********************************************/
 	
-	const { getIndex, getById, middleware } = bookController(nav);
+	const { getIndex, getById, middleware } = bookController(bookService, nav);
 	bookRouter.use(middleware);
 
 	bookRouter.route('/')
