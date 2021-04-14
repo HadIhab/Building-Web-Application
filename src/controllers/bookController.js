@@ -49,7 +49,7 @@ function bookController(bookService,nav) {
 
 	          const book = await col.findOne({ _id: new ObjectID(id) });
 	          debug(book);
-	          const book.details = await bookService.getById(book.bookId);
+	          const book.details = await bookService.getBookById(book.bookId);
 
 	          res.render(
 	            'bookView',
