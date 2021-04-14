@@ -49,7 +49,7 @@ function bookController(bookService,nav) {
 
 	          const book = await col.findOne({ _id: new ObjectID(id) });
 	          debug(book);
-	          const book.details = await bookService.getBookById(book.bookId);
+	          book.details = await bookService.getBookById(book.bookId);
 
 	          res.render(
 	            'bookView',
@@ -67,12 +67,12 @@ function bookController(bookService,nav) {
 
     function middleware(req,res,next) {
 		
-		if(req.user){
+		//if(req.user){
 			next();
-		}
-		else{
-			res.redirect('/');
-		}
+		//}
+		//else{
+		//	res.redirect('/');
+		//}
 	}
 
 	return {
